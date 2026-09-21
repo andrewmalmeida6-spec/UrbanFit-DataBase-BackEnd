@@ -29,7 +29,7 @@ const router = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/RespostaErro'
+ *               $ref: '#/components/schemas/Cliente'
  *       409:
  *         description: CPF ou e-mail já cadastrados
  *         content:
@@ -45,15 +45,23 @@ router.post('/', clienteController.criar);
  *   get:
  *     tags: [Cliente]
  *     summary: Lista todos os clientes
- *   responses:
- *     200:
- *       description: Clientes listados
- *       content:
- *         application/json:
- *           schema:
- *             type: array
- *             items:
- *               $ref: '#/components/schemas/Cliente'
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Clientes listados
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Cliente'
+ *       401:
+ *         description: Token ausente, inválido ou expirado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RespostaErro'
  */
 router.get('/', authMiddleware, clienteController.listar);
 
@@ -62,7 +70,7 @@ router.get('/', authMiddleware, clienteController.listar);
  * /api/cliente/{id}:
  *   get:
  *     tags: [Cliente]
- *     summary: Lista clientes por id
+ *     summary: Busca cliente por ID
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -77,7 +85,7 @@ router.get('/', authMiddleware, clienteController.listar);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/RespostaErro'
+ *               $ref: '#/components/schemas/Cliente'
  *       401:
  *         description: Token ausente, inválido ou expirado
  *         content:

@@ -19,10 +19,10 @@ export const swaggerSpec = swaggerJSDoc({
 
     tags: [
       {name: 'Autenticação', description: 'Login e emissão de token JWT' },
-      {name: 'Clientes', description: 'Cadastro e consulta de clientes' },
-      {name: 'Pedidos', description: 'Emissão do pedido de compra' },
+      {name: 'Cliente', description: 'Cadastro e consulta de clientes' },
+      {name: 'Pedido', description: 'Emissão do pedido de compra' },
       {name: 'Item', description: 'Item específico para o pedido' },
-      {name: 'Estoque opção', description: 'Gestão de opções de produto e estoque' },
+      {name: 'Estoque', description: 'Gestão de opções de produto e estoque' },
       {name: 'Produto', description: 'Cadastro de produto'},
       {name: 'Categoria', description: 'Cadastro de categoria(tipo) de produto'},
     ],
@@ -77,7 +77,7 @@ export const swaggerSpec = swaggerJSDoc({
           },
         },
 
-        Item: {
+        Item_pedido: {
           type: 'object',
           description: 'Item especificado para compra',
           properties: {
@@ -88,10 +88,10 @@ export const swaggerSpec = swaggerJSDoc({
             preco_sub_total:    {type: 'number', example: 1000},
           },
           pedido: {$ref: '#/components/schemas/Pedido'},
-          estoque_opcao: {$ref: '#/components/schemas/EstoqueOpcao'}
+          estoque_opcao: {$ref: '#/components/schemas/Estoque'}
         },
 
-        EstoqueOpcao: {
+        Estoque: {
           type: 'object',
           description: 'Opção de estoque de um produto',
           properties: {
@@ -106,7 +106,7 @@ export const swaggerSpec = swaggerJSDoc({
 
         Produto: {
           type: 'object',
-          description: '',
+          description: 'Produtos da loja',
           properties: {
             id: {type: 'integer', example: 1},
             categoria_id: {type: 'integer', example: 1},

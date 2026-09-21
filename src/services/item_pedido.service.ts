@@ -32,7 +32,7 @@ export async function criarItem(dados:dadosItem) {
 
         let preco_sub_total:number = estoque_opcao.produto.preco_base * dados.quantidade;
 
-        const item_pedido = await tx.itemPedido.create({
+        const item = await tx.itemPedido.create({
             data: {...dados, preco_sub_total},
             include: {estoque_opcao: true, pedido:true}
         });
@@ -44,30 +44,31 @@ export async function criarItem(dados:dadosItem) {
             }}
         })
 
-        return item_pedido;
+        return item;
     }) 
 } 
 
-export async function listarItem() {
-    const item_pedido = await prisma.itemPedido.findMany({
-        include: {estoque_opcao: true, pedido:true},
+export async function listarItem(pedido_id:number) {
+    const itens = await prisma.itemPedido.findMany({
+        where: {pedido_id},
+        include: {estoque_opcao: true, pedido: true},
         orderBy: {id: "asc"}
     })
 
-    return item_pedido;
+    return itens;
 }
 
 export async function buscarItemPorId(id: number) {
-    const item_pedido = await prisma.itemPedido.findUnique({
+    const item = await prisma.itemPedido.findUnique({
         where: {id},
         include: {estoque_opcao: true, pedido:true}
     })
 
-    if(!item_pedido) {
+    if(!item) {
         throw new AppError("Item não encontrado!", 404)
     }
 
-    return item_pedido;
+    return item;
 }
 
 export async function adicionarItens(id:number, quantidade:number) {
@@ -78,6 +79,18 @@ export async function adicionarItens(id:number, quantidade:number) {
 
         if (!item) {
             throw new AppError("Item não encontrado", 404)
+        }
+
+        const pedido = await tx.pedido.findUnique({
+            where: {id: item.pedido_id}
+        })
+
+        if(!pedido){
+            throw new AppError("Pedido não encontrado!", 404); 
+        }
+
+        if(pedido.status === "FINALIZADO" || pedido.status === "CANCELADO"){
+            throw new AppError("Pedido já finalizado", 403)
         }
 
         const valor_unitario = item.preco_sub_total/item.quantidade
@@ -110,11 +123,27 @@ export async function removerItens(id:number, quantidade:number) {
             throw new AppError("Item não encontrado", 404)
         }
 
+        const pedido = await tx.pedido.findUnique({
+            where: {id: item.pedido_id}
+        })
+
+        if(!pedido){
+            throw new AppError("Pedido não encontrado!", 404); 
+        }
+
+        if(pedido.status === "FINALIZADO" || pedido.status === "CANCELADO"){
+            throw new AppError("Pedido já finalizado", 403)
+        }
+
         const valor_unitario = item.preco_sub_total/item.quantidade
 
         if (quantidade > item.quantidade) {
-            throw new AppError("Para retirar um item, use a função de deletar", 403)
-        } else {
+            throw new AppError("Para remover todos os itens, use a função de deletar", 403)
+        } 
+        else if (quantidade > 0) {
+            throw new AppError("Não pode remover uma quantidade negativa", 403)
+        } 
+        else {
             await tx.pedido.update({
                 where: {id: item.pedido_id},
                 data: {valor_final: { decrement: valor_unitario * quantidade}}
@@ -137,6 +166,18 @@ export async function deletarItem(id:number) {
 
         if (!item) {
             throw new AppError("Item não encontrado", 404)
+        }
+
+        const pedido = await tx.pedido.findUnique({
+            where: {id: item.pedido_id}
+        })
+
+        if(!pedido){
+            throw new AppError("Pedido não encontrado!", 404); 
+        }
+
+        if(pedido.status === "FINALIZADO" || pedido.status === "CANCELADO"){
+            throw new AppError("Pedido já finalizado", 403)
         }
 
         await tx.pedido.update({

@@ -8,13 +8,6 @@ interface CriarEstoqueOpcao {
     quantidade_estoque: number;
 }
 
-interface AtualizarEstoqueOpcao {
-    produto_id?: number;
-    cor?: string;
-    tamanho?: string;
-    quantidade_estoque?: number;
-}
-
 export async function criarEstoqueOpcao(dados:CriarEstoqueOpcao) {
     const produto = await prisma.produto.findUnique({
         where: {id: dados.produto_id}
@@ -56,12 +49,66 @@ export async function buscarEstoqueOpcaoPorId(id: number) {
     return estoque_opcao;
 }
 
-export async function atualizarEstoqueOpcao(id:number, dados: AtualizarEstoqueOpcao){
-    await buscarEstoqueOpcaoPorId(id)
+export async function adicionarEstoque(id:number, quantidade:number) {
+    return prisma.$transaction(async (tx) => {
+        const estoque = await tx.estoqueOpcao.findUnique({
+            where: {id}
+        })
 
-    return prisma.estoqueOpcao.update({
-        where: {id},
-        data: dados,
-        include: {produto: true}
+        if (!estoque) {
+            throw new AppError("Opção de estoque não encontrada", 404)
+        }
+
+        if (quantidade <= 0) {
+            throw new AppError("Não pode adicionar uma quantidade negativa", 403)
+        } else {
+            await tx.estoqueOpcao.update({
+                where: {id: estoque.id},
+                data: {quantidade_estoque: { increment: quantidade}}
+            })
+        }
+        }
+    )
+}
+
+export async function removerEstoque(id:number, quantidade:number) {
+    return prisma.$transaction(async (tx) => {
+        const estoque = await tx.estoqueOpcao.findUnique({
+            where: {id}
+        })
+
+        if (!estoque) {
+            throw new AppError("Opção de estoque não encontrada", 404)
+        }
+
+        if (quantidade > estoque.quantidade_estoque) {
+            throw new AppError("Para remover todos os itens do estoque, use a função de deletar", 403)
+        } 
+        else if (quantidade > 0) {
+            throw new AppError("Não pode remover uma quantidade negativa", 403)
+        } 
+        else {
+            await tx.estoqueOpcao.update({
+                where: {id: estoque.id},
+                data: {quantidade_estoque: { decrement: quantidade}}
+            })
+        }
+        }
+    )
+}
+
+export async function deletarEstoque(id:number) {
+    return prisma.$transaction(async (tx) => {
+        const estoque = await tx.estoqueOpcao.findUnique({
+            where: {id}
+        })
+
+        if (!estoque) {
+            throw new AppError("Item não encontrado", 404)
+        }
+
+        await tx.estoqueOpcao.delete({
+            where: {id}
+        })
     })
 }

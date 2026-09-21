@@ -18,8 +18,21 @@ export async function buscarPorId(req: Request, res: Response): Promise<void> {
     res.status(200).json(produto);
 }
 
-export async function atualizar(req:Request, res: Response): Promise<void> {
+export async function adicionar(req:Request, res: Response): Promise<void> {
     const id = Number(req.params.id);
-    const produto = await estoqueOpcaoService.atualizarEstoqueOpcao(id, req.body);
+    const produto = await estoqueOpcaoService.deletarEstoque(id);
+    res.status(200).json(produto)
+}
+
+export async function remover(req:Request, res: Response): Promise<void> {
+    const id = Number(req.params.id);
+    const quantidade = Number(req.params.quantidade);
+    const produto = await estoqueOpcaoService.removerEstoque(id, quantidade);
+    res.status(200).json(produto)
+}
+
+export async function deletar(req:Request, res: Response): Promise<void> {
+    const id = Number(req.params.id);
+    const produto = await estoqueOpcaoService.deletarEstoque(id);
     res.status(200).json(produto)
 }

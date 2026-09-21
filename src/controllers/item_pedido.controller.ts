@@ -8,7 +8,8 @@ export async function criar(req: Request, res: Response): Promise<void> {
 }
 
 export async function listar(req: Request, res: Response): Promise<void> {
-    const item_pedido = await itemPedidoService.listarItem();
+    const pedido_id = Number(req.params.id);
+    const item_pedido = await itemPedidoService.listarItem(pedido_id);
     res.status(200).json(item_pedido);
 }
 
@@ -20,14 +21,14 @@ export async function buscarPorId(req: Request, res: Response): Promise<void> {
 
 export async function adicionar(req: Request, res: Response): Promise<void> {
     const id = Number(req.params.id);
-    const quantidade = Number(req.params.quantidade)
+    const quantidade = Number(req.params.quantidade);
     const item_pedido = await itemPedidoService.adicionarItens(id, quantidade);
     res.status(200).json(item_pedido);
 }
 
 export async function remover(req: Request, res: Response): Promise<void> {
     const id = Number(req.params.id);
-    const quantidade = Number(req.params.quantidade)
+    const quantidade = Number(req.params.quantidade);
     const item_pedido = await itemPedidoService.removerItens(id, quantidade);
     res.status(200).json(item_pedido);
 }

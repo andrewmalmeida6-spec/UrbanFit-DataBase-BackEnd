@@ -7,7 +7,7 @@ const router = Router();
  * @openapi
  * /api/auth/login:
  *   post:
- *     tags: [Auntenticação]
+ *     tags: [Autenticação]
  *     summary: Faz login e devolve um token JWT
  *     description: >
  *       Troca email e senha em um token JWT com validade de 1 dia.
@@ -27,25 +27,25 @@ const router = Router();
  *               senha:
  *                 type: string
  *                 example: '123456'  
- *   responses:
- *     200:
- *       description: Login feito com sucesso
- *       content:
- *         application/json:
- *           schemas:
- *             type: object
- *             properties:
- *               token:
- *                 type: string
- *                 example: errYHAUSusfasyttASuiasdIAshd...
- *               cliente:
- *                 $ref: '#/components/schemas/Cliente'
- *     401:
- *       description: E-mail ou senha inválidos
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/RespostaErro'
+ *     responses:
+ *       200:
+ *         description: Login feito com sucesso
+ *         content:
+ *           application/json:
+ *             schemas:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   example: errYHAUSusfasyttASuiasdIAshd...
+ *                 cliente:
+ *                   $ref: '#/components/schemas/Cliente'
+ *       401:
+ *         description: E-mail ou senha inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RespostaErro'
  */
 router.post('/login', authController.login);
 
