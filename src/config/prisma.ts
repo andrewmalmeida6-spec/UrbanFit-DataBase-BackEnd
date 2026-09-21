@@ -1,5 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 
-export const prisma = new PrismaClient({
-  log: ['query', 'warn', 'error'],
-});
+const globalParaPrisma = globalThis as unknown as { prisma?: PrismaClient };
+
+export const prisma =
+  globalParaPrisma.prisma ??
+  new PrismaClient({
+    log:
+      process.env.NODE_ENV === 'production'
+        ? ['error']
+        : ['query', 'warn', 'error'],
+  });
+
+globalParaPrisma.prisma = prisma;
