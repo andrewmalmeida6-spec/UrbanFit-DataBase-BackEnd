@@ -5,6 +5,12 @@ async function main() {
 
     console.log('Iniciando criação dados...\n')
 
+    const categoriasExistentes = await prisma.categoria.count();
+    if (categoriasExistentes > 0) {
+        console.log("O banco já foi populado")
+        return;
+    }
+
     //CATEGORIAS
     const camisa = await prisma.categoria.create({
         data: {nome: "Camisa", descricao: "Camisas"}
