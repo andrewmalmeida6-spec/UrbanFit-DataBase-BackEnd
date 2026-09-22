@@ -2,17 +2,17 @@ import { prisma } from '../config/prisma';
 import { AppError } from '../middlewares/error.middleware';
 
 interface CriarProduto {
-    categoria_id: number;
-    nome: string;
-    marca: string;
-    preco_base: number;
+    categoria_id:   number;
+    nome:           string;
+    marca:          string;
+    preco_base:     number;
 }
 
 interface AtualizarProduto {
-    categoria_id?: number;
-    nome?: string;
-    marca?: string;
-    preco_base?: number;
+    categoria_id?:  number;
+    nome?:          string;
+    marca?:         string;
+    preco_base?:    number;
 }
 
 export async function criarProduto(dados: CriarProduto){

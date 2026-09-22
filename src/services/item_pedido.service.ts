@@ -2,9 +2,9 @@ import { prisma } from '../config/prisma';
 import { AppError } from '../middlewares/error.middleware';
 
 interface dadosItem {
-    pedido_id: number;
-    estoque_opcao_id: number;
-    quantidade: number;
+    pedido_id:          number;
+    estoque_opcao_id:   number;
+    quantidade:         number;
 }
 
 export async function criarItem(dados:dadosItem) {

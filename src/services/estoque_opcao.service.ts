@@ -2,10 +2,10 @@ import { prisma } from '../config/prisma';
 import { AppError } from '../middlewares/error.middleware';
 
 interface CriarEstoqueOpcao {
-    produto_id: number;
-    cor: string;
-    tamanho: string;
-    quantidade_estoque: number;
+    produto_id:             number;
+    cor:                    string;
+    tamanho:                string;
+    quantidade_estoque:     number;
 }
 
 export async function criarEstoqueOpcao(dados:CriarEstoqueOpcao) {

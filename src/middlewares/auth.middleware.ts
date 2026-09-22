@@ -2,9 +2,13 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { AppError } from './error.middleware';
 
+type Perfil = 'cliente' | 'funcionario'
+
 interface TokenPayload {
-  id: number;
-  email: string;
+  id:     number;
+  email:  string;
+  perfil: Perfil
+  cargo?: string
 }
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction): void {
@@ -26,11 +30,25 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
   try {
 
     const payload = jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
-    req.user = { id: payload.id, email: payload.email };
+    req.user = { id: payload.id, email: payload.email, perfil: payload.perfil, cargo: payload.cargo };
   } catch {
     
     throw new AppError('Token inválido ou expirado.', 401);
   }
 
   next();
+}
+
+export function authorize(...perfisPermitidos: Perfil[]) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      throw new AppError("Usuário não autenticado!", 401);
+    }
+
+    if (!perfisPermitidos.includes(req.user.perfil)) {
+      throw new AppError("Você não tem permissão para estar aqui")
+    }
+
+    next();
+  }
 }

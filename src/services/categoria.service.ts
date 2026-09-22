@@ -2,12 +2,12 @@ import { prisma } from '../config/prisma';
 import { AppError } from '../middlewares/error.middleware';
 
 interface CriarCategoria {
-    nome: string;
-    descricao: string;
+    nome:       string;
+    descricao:  string;
 }
 
 interface AtualizarCategoria {
-    nome?: string;
+    nome?:      string;
     descricao?: string;
 }
 
