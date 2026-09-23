@@ -59,11 +59,11 @@ export function autorizarCargo(cargosPermitidos: string) {
     }
 
     if (req.user.perfil !== "funcionario") {
-      throw new AppError("Sem nível de autorização para esta função", 403);
+      throw new AppError("Sem autorização para esta função", 403);
     }
 
     if (req.user.cargo !== cargosPermitidos) {
-      throw new AppError("Sem nível de autorização para esta função", 403);
+      throw new AppError("Sem autorização para esta função", 403);
     }
 
     next();

@@ -4,11 +4,6 @@ import { prisma } from '../src/config/prisma';
 async function main() {
     console.log('Iniciando criação dados...\n')
 
-    const senhaHashFuncionario = await bcrypt.hash('adm123', 10)
-    await prisma.funcionario.create({
-        data: {nome: 'Ademir', email: 'adm@teste.com', senha: senhaHashFuncionario, cargo: 'administrador'}
-    })
-
     const categoriasExistentes = await prisma.categoria.count();
     if (categoriasExistentes > 0) {
         console.log("O banco já foi populado")
@@ -58,6 +53,19 @@ async function main() {
 
     console.log("5 opções de estoque criadas");
     
+    const adm = await prisma.funcionario.findFirst({
+        where: {cargo: 'administrador'}
+    })
+    if (adm) {
+        console.log("Administrador já existe");
+        return;
+    }
+
+    const senhaHashFuncionario = await bcrypt.hash('adm123', 10)
+    await prisma.funcionario.create({
+        data: {nome: 'Ademir', email: 'adm@teste.com', senha: senhaHashFuncionario, cargo: 'administrador'}
+    })
+
     //CLIENTES
     const senhaHash = await bcrypt.hash('101010', 10);
      await prisma.cliente.create({
