@@ -1,12 +1,12 @@
 import * as funcionarioController from '../controllers/funcionario.controller';
 import { Router } from 'express';
-import { autorizar, autorizarCargo } from '../middlewares/auth.middleware';
+import { authMiddleware, autorizar, autorizarCargo } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-router.use(autorizarCargo('administrador')),
+router.use(authMiddleware, autorizarCargo('administrador')),
 
-router.post('/', autorizar('cliente'), funcionarioController.criar);
+router.post('/', funcionarioController.criar);
 router.get('/', funcionarioController.listar);
 router.get('/:id', funcionarioController.buscarPorID);
 
