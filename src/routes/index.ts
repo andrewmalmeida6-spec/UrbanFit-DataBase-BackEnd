@@ -6,6 +6,7 @@ import itemPedidoRoutes from './item_pedido.routes';
 import estoqueOpcaoRoutes from './estoque_opcao.routes';
 import produtoRoutes from './produto.routes';
 import categoriaRoutes from './categoria.routes';
+import funcionarioRoutes from './funcionario.routes';
 
 const routes = Router();
 
@@ -16,5 +17,6 @@ routes.use('/item', itemPedidoRoutes)
 routes.use('/estoque', estoqueOpcaoRoutes);
 routes.use('/produto', produtoRoutes);
 routes.use('/categoria', categoriaRoutes);
+routes.use('/funcionario', funcionarioRoutes);
 
 export { routes };

@@ -19,7 +19,7 @@ export async function criarFuncionario(dados:dadosFuncionario) {
     const senhaHash = await bcrypt.hash(dados.senha, 10);
 
     if (dados.cargo === 'administrador') {
-        throw new AppError('Você não pode criar administrador')
+        throw new AppError('Você não pode criar administrador', 403)
     }
 
     const funcionario = await prisma.funcionario.create({
