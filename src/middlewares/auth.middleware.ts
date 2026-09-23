@@ -39,14 +39,32 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
   next();
 }
 
-export function authorize(...perfisPermitidos: Perfil[]) {
+export function autorizar(...perfisPermitidos: Perfil[]) {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
       throw new AppError("Usuário não autenticado!", 401);
     }
 
     if (!perfisPermitidos.includes(req.user.perfil)) {
-      throw new AppError("Você não tem permissão para estar aqui")
+      throw new AppError('Você não tem permissão para estar aqui.', 403);
+    }
+
+    next();
+  }
+}
+
+export function autorizarCargo(cargosPermitidos: string) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      throw new AppError("Usuário não autenticado!", 401);
+    }
+
+    if (req.user.perfil !== "funcionario") {
+      throw new AppError("Sem nível de autorização para esta função", 403);
+    }
+
+    if (req.user.cargo !== cargosPermitidos) {
+      throw new AppError("Sem nível de autorização para esta função", 403);
     }
 
     next();

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as estoqueOpcaoController from '../controllers/estoque_opcao.controller';
-import { authMiddleware } from '../middlewares/auth.middleware';
+import { authMiddleware, autorizar } from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -84,7 +84,7 @@ router.get('/:id', estoqueOpcaoController.buscarPorId);
  *             schema:
  *               $ref: '#/components/schemas/RespostaErro'
  */
-router.post('/', authMiddleware, estoqueOpcaoController.criar);
+router.post('/', authMiddleware, autorizar('funcionario'), estoqueOpcaoController.criar);
 
 /**
  * @openapi
@@ -139,7 +139,7 @@ router.post('/', authMiddleware, estoqueOpcaoController.criar);
  *               $ref: '#/components/schemas/RespostaErro'
  *    
  */
-router.patch('/:id/adicionar/:quantidade', authMiddleware, estoqueOpcaoController.adicionar);
+router.patch('/:id/adicionar/:quantidade', authMiddleware, autorizar('funcionario'), estoqueOpcaoController.adicionar);
 
 /**
  * @openapi
@@ -194,7 +194,7 @@ router.patch('/:id/adicionar/:quantidade', authMiddleware, estoqueOpcaoControlle
  *               $ref: '#/components/schemas/RespostaErro'
  *    
  */
-router.patch('/:id/adicionar/:quantidade', authMiddleware, estoqueOpcaoController.remover);
+router.patch('/:id/adicionar/:quantidade', authMiddleware, autorizar('funcionario'), estoqueOpcaoController.remover);
 
 /**
  * @openapi
@@ -231,6 +231,6 @@ router.patch('/:id/adicionar/:quantidade', authMiddleware, estoqueOpcaoControlle
  *               $ref: '#/components/schemas/RespostaErro'
  *       
  */
-router.delete('/:id', authMiddleware, estoqueOpcaoController.deletar);
+router.delete('/:id', authMiddleware, autorizar('funcionario'), estoqueOpcaoController.deletar);
 
 export default router;

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as clienteController from '../controllers/cliente.controller';
-import { authMiddleware } from '../middlewares/auth.middleware';
+import { authMiddleware, autorizar } from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -63,7 +63,7 @@ router.post('/', clienteController.criar);
  *             schema:
  *               $ref: '#/components/schemas/RespostaErro'
  */
-router.get('/', authMiddleware, clienteController.listar);
+router.get('/', authMiddleware, autorizar('funcionario'), clienteController.listar);
 
 /**
  * @openapi
@@ -99,7 +99,7 @@ router.get('/', authMiddleware, clienteController.listar);
  *             schema:
  *               $ref: '#/components/schemas/RespostaErro'
  */
-router.get('/:id', authMiddleware, clienteController.buscarPorId);
+router.get('/:id', authMiddleware, autorizar('funcionario'), clienteController.buscarPorId);
 
 export default router;
 

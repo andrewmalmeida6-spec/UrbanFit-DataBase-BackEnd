@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as categoriaController from '../controllers/categoria.controller';
-import { authMiddleware } from '../middlewares/auth.middleware';
+import { authMiddleware, autorizar } from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -83,7 +83,7 @@ router.get('/:id', categoriaController.buscarPorId);
  *               $ref: '#/components/schemas/RespostaErro'
  *         
  */
-router.post('/', authMiddleware, categoriaController.criar); 
+router.post('/', authMiddleware, autorizar('funcionario'), categoriaController.criar); 
 
 /**
  * @openapi
@@ -123,6 +123,6 @@ router.post('/', authMiddleware, categoriaController.criar);
  *             schema:
  *               $ref: '#/components/schemas/RespostaErro'
  */
-router.patch('/:id', authMiddleware, categoriaController.atualizar); 
+router.patch('/:id', authMiddleware, autorizar('funcionario'), categoriaController.atualizar); 
 
 export default router;

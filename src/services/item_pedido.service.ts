@@ -7,7 +7,7 @@ interface dadosItem {
     quantidade:         number;
 }
 
-export async function criarItem(dados:dadosItem) {
+export async function criarItem(dados: dadosItem, cliente_id: number) {
     return prisma.$transaction(async (tx) => {
         const estoque_opcao = await tx.estoqueOpcao.findUnique({
             where: {id: dados.estoque_opcao_id},
@@ -26,9 +26,15 @@ export async function criarItem(dados:dadosItem) {
             throw new AppError("Pedido não encontrado!", 404); 
         }
 
+        if (cliente_id != pedido.cliente_id) {
+            throw new AppError("Não foi possível realizaer esta ação", 403);
+        }
+
         if(pedido.status === "FINALIZADO" || pedido.status === "CANCELADO"){
             throw new AppError("Pedido já finalizado", 403)
         }
+
+        
 
         let preco_sub_total:number = estoque_opcao.produto.preco_base * dados.quantidade;
 
@@ -140,7 +146,7 @@ export async function removerItens(id:number, quantidade:number) {
         if (quantidade > item.quantidade) {
             throw new AppError("Para remover todos os itens, use a função de deletar", 403)
         } 
-        else if (quantidade > 0) {
+        else if (quantidade < 0) {
             throw new AppError("Não pode remover uma quantidade negativa", 403)
         } 
         else {

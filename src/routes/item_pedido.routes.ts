@@ -1,10 +1,10 @@
 import * as itemPedidoController from '../controllers/item_pedido.controller';
-import { authMiddleware } from '../middlewares/auth.middleware';
+import { authMiddleware, autorizar } from '../middlewares/auth.middleware';
 import { Router } from 'express';
 
 const router = Router();
 
-router.use(authMiddleware);
+router.use(authMiddleware, autorizar('cliente'));
 
 /**
  * @openapi
@@ -28,7 +28,7 @@ router.use(authMiddleware);
  *               items:
  *                 $ref: '#/components/schemas/Item_pedido'
  */
-router.get('/pedido/:id', itemPedidoController.listar); 
+router.get('/pedido/:id', autorizar('funcionario'), itemPedidoController.listar); 
 
 /**
  * @openapi
@@ -56,7 +56,7 @@ router.get('/pedido/:id', itemPedidoController.listar);
  *             schema:
  *               $ref: '#/components/schemas/RespostaErro'
  */
-router.get('/:id', itemPedidoController.buscarPorId); 
+router.get('/:id', autorizar('funcionario'), itemPedidoController.buscarPorId); 
 
 /**
  * @openapi
