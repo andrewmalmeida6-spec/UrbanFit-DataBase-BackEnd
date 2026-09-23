@@ -30,23 +30,26 @@ export async function buscarPorId(req: Request, res: Response): Promise<void> {
 
 export async function adicionar(req: Request, res: Response): Promise<void> {
     const id            = Number(req.params.id);
+    const cliente_id    = req.user!.id;
     const quantidade    = Number(req.params.quantidade);
-    const item_pedido   = await itemPedidoService.adicionarItens(id, quantidade);
+    const item_pedido   = await itemPedidoService.adicionarItens(id, quantidade, cliente_id);
     
     res.status(200).json(item_pedido);
 }
 
 export async function remover(req: Request, res: Response): Promise<void> {
     const id            = Number(req.params.id);
+    const cliente_id    = req.user!.id;
     const quantidade    = Number(req.params.quantidade);
-    const item_pedido   = await itemPedidoService.removerItens(id, quantidade);
+    const item_pedido   = await itemPedidoService.removerItens(id, quantidade, cliente_id);
 
     res.status(200).json(item_pedido);
 }
 
 export async function deletar(req: Request, res: Response): Promise<void> {
     const id            = Number(req.params.id);
-    const item_pedido   = await itemPedidoService.deletarItem(id);
+    const cliente_id    = req.user!.id;
+    const item_pedido   = await itemPedidoService.deletarItem(id, cliente_id);
 
     res.status(200).json(item_pedido);
 }

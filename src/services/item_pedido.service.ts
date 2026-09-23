@@ -34,8 +34,6 @@ export async function criarItem(dados: dadosItem, cliente_id: number) {
             throw new AppError("Pedido já finalizado", 403)
         }
 
-        
-
         let preco_sub_total:number = estoque_opcao.produto.preco_base * dados.quantidade;
 
         const item = await tx.itemPedido.create({
@@ -77,7 +75,7 @@ export async function buscarItemPorId(id: number) {
     return item;
 }
 
-export async function adicionarItens(id:number, quantidade:number) {
+export async function adicionarItens(id:number, quantidade:number, cliente_id:number) {
     return prisma.$transaction(async (tx) => {
         const item = await tx.itemPedido.findUnique({
             where: {id}
@@ -97,6 +95,10 @@ export async function adicionarItens(id:number, quantidade:number) {
 
         if(pedido.status === "FINALIZADO" || pedido.status === "CANCELADO"){
             throw new AppError("Pedido já finalizado", 403)
+        }
+
+        if (cliente_id != pedido.cliente_id) {
+            throw new AppError("Não foi possível realizaer esta ação", 403);
         }
 
         const valor_unitario = item.preco_sub_total/item.quantidade
@@ -119,7 +121,7 @@ export async function adicionarItens(id:number, quantidade:number) {
     )
 }
 
-export async function removerItens(id:number, quantidade:number) {
+export async function removerItens(id:number, quantidade:number, cliente_id:number) {
     return prisma.$transaction(async (tx) => {
         const item = await tx.itemPedido.findUnique({
             where: {id}
@@ -139,6 +141,10 @@ export async function removerItens(id:number, quantidade:number) {
 
         if(pedido.status === "FINALIZADO" || pedido.status === "CANCELADO"){
             throw new AppError("Pedido já finalizado", 403)
+        }
+
+        if (cliente_id != pedido.cliente_id) {
+            throw new AppError("Não foi possível realizaer esta ação", 403);
         }
 
         const valor_unitario = item.preco_sub_total/item.quantidade
@@ -164,7 +170,7 @@ export async function removerItens(id:number, quantidade:number) {
     })
 }
 
-export async function deletarItem(id:number) {
+export async function deletarItem(id:number, cliente_id:number) {
     return prisma.$transaction(async (tx) => {
         const item = await tx.itemPedido.findUnique({
             where: {id}
@@ -184,6 +190,10 @@ export async function deletarItem(id:number) {
 
         if(pedido.status === "FINALIZADO" || pedido.status === "CANCELADO"){
             throw new AppError("Pedido já finalizado", 403)
+        }
+
+        if (cliente_id != pedido.cliente_id) {
+            throw new AppError("Não foi possível realizaer esta ação", 403);
         }
 
         await tx.pedido.update({

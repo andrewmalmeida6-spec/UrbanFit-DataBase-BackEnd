@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { authMiddleware } from '../middlewares/auth.middleware';
+import { authMiddleware, autorizar } from '../middlewares/auth.middleware';
 import * as pedidoController from '../controllers/pedido.controller'
 
 const router = Router();
 
-router.use(authMiddleware);
+router.use(authMiddleware, autorizar('cliente'));
 
 /**
  * @openapi
@@ -28,7 +28,7 @@ router.use(authMiddleware);
  *               items:
  *                 $ref: '#/components/schemas/Pedido'
  */
-router.get('/:cliente_id', pedidoController.listar);
+router.get('/:cliente_id', autorizar('funcionario'), pedidoController.listar);
 
 /**
  * @openapi
@@ -56,7 +56,7 @@ router.get('/:cliente_id', pedidoController.listar);
  *             schema:
  *               $ref: '#/components/schemas/RespostaErro'
  */
-router.get('/:id', pedidoController.buscarPorId);
+router.get('/:id', autorizar('funcionario'), pedidoController.buscarPorId);
 
 /**
  * @openapi

@@ -3,7 +3,8 @@ import * as pedidoService from '../services/pedido.service';
 
 export async function criar(req: Request, res: Response): Promise<void> {
     const { cliente_id }    = req.body;
-    const pedido            = await pedidoService.criarPedido({ cliente_id });
+    const cliente_id_token = req.user!.id;
+    const pedido            = await pedidoService.criarPedido({ cliente_id }, cliente_id_token);
     res.status(201).json(pedido);
 }
 

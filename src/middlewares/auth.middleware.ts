@@ -28,7 +28,6 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
   const token = partes[1];
 
   try {
-
     const payload = jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
     req.user = { id: payload.id, email: payload.email, perfil: payload.perfil, cargo: payload.cargo };
   } catch {

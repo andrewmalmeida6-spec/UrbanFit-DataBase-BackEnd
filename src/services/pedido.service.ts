@@ -5,8 +5,12 @@ interface dadosPedido {
     cliente_id:number
 }
 
-export async function criarPedido(dados:dadosPedido) {
+export async function criarPedido(dados:dadosPedido, cliente_id:number) {
     return prisma.$transaction(async (tx) => {
+        if (cliente_id != dados.cliente_id) {
+            throw new AppError("Não foi possível realizaer esta ação", 403);
+        }
+
         let valor_final:number = 0;
 
         const cliente = await tx.cliente.findUnique({

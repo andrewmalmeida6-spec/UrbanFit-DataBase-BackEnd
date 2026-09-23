@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authMiddleware, authorize } from "../middlewares/auth.middleware";
+import { authMiddleware, autorizar } from "../middlewares/auth.middleware";
 import * as produtoController from '../controllers/produto.controller';
 
 const router = Router();
@@ -78,7 +78,7 @@ router.get('/:id', produtoController.buscarPorId);
  *             schema:
  *               $ref: '#/component/schemas/Produto'
  */
-router.post('/', authMiddleware, authorize('funcionario'), produtoController.criar);
+router.post('/', authMiddleware, autorizar('funcionario'), produtoController.criar);
 
 /**
  * @openapi
@@ -121,6 +121,6 @@ router.post('/', authMiddleware, authorize('funcionario'), produtoController.cri
  *               $ref: '#/components/schemas/RespostaErro'
  * 
  */
-router.patch('/:id', authMiddleware, authorize('funcionario'), produtoController.atualizar);
+router.patch('/:id', authMiddleware, autorizar('funcionario'), produtoController.atualizar);
 
 export default router;
