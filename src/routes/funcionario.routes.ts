@@ -1,6 +1,6 @@
 import * as funcionarioController from '../controllers/funcionario.controller';
 import { Router } from 'express';
-import { authMiddleware, autorizar, autorizarCargo } from '../middlewares/auth.middleware';
+import { authMiddleware, autorizarCargo } from '../middlewares/auth.middleware';
 
 const router = Router();
 
