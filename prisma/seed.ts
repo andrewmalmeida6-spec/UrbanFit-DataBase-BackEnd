@@ -4,8 +4,13 @@ import { prisma } from '../src/config/prisma';
 async function main() {
     console.log('Iniciando criação dados...\n')
 
+    await prisma.funcionario.delete({
+        where: {id: 1}
+    })
+
+    const senhaHashFuncionario = await bcrypt.hash('adm123', 10)
     await prisma.funcionario.create({
-        data: {nome: 'Ademir', email: 'adm@teste.com', senha: 'adm123', cargo: 'administrador'}
+        data: {nome: 'Ademir', email: 'adm@teste.com', senha: senhaHashFuncionario, cargo: 'administrador'}
     })
 
     const categoriasExistentes = await prisma.categoria.count();
