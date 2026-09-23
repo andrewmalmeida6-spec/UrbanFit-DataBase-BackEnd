@@ -35,6 +35,8 @@ export async function buscarCategoriaPorId(id: number) {
     if(!categoria){
         throw new AppError('Categoria não encontrada', 404);
     }
+
+    return categoria;
 }
 
 export async function AtualizarCategoria(id:number, dados: AtualizarCategoria) {
