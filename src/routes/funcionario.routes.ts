@@ -8,4 +8,6 @@ router.use(autorizarCargo('administrador')),
 
 router.post('/', funcionarioController.criar);
 router.get('/', funcionarioController.listar);
-router.get('/:id', funcionarioController.buscarPorID)
+router.get('/:id', funcionarioController.buscarPorID);
+
+export default router;
