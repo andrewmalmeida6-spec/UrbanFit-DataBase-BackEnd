@@ -2,8 +2,11 @@ import bcrypt from 'bcryptjs';
 import { prisma } from '../src/config/prisma';
 
 async function main() {
-
     console.log('Iniciando criação dados...\n')
+
+    await prisma.funcionario.create({
+        data: {nome: 'Ademir', email: 'adm@teste.com', senha: 'adm123', cargo: 'administrador'}
+    })
 
     const categoriasExistentes = await prisma.categoria.count();
     if (categoriasExistentes > 0) {
