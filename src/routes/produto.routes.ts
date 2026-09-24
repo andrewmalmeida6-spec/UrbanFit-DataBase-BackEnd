@@ -123,4 +123,24 @@ router.post('/', authMiddleware, autorizar('funcionario'), produtoController.cri
  */
 router.patch('/:id', authMiddleware, autorizar('funcionario'), produtoController.atualizar);
 
+/**
+ * @openapi
+ * /api/produto/{id}:
+ *   delete:
+ *     tags: [Produto]
+ *     summary: Deleta produto
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema: {type: integer}
+ *         example: 1
+ *     responses:
+ *       200:
+ *         description: Produto deletado
+ */
+router.delete('/:id', authMiddleware, autorizar('funcionario'), produtoController.deletar);
+
 export default router;

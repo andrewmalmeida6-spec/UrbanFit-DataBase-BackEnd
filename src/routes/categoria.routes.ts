@@ -125,4 +125,24 @@ router.post('/', authMiddleware, autorizar('funcionario'), categoriaController.c
  */
 router.patch('/:id', authMiddleware, autorizar('funcionario'), categoriaController.atualizar); 
 
+/**
+ * @openapi
+ * /api/categoria/{id}:
+ *   delete:
+ *     tags: [Categoria]
+ *     summary: Deleta uma categoria
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema: {type: integer}
+ *         example: 1
+ *     responses:
+ *       200:
+ *         description: Categoria deletada
+ */
+router.patch('/:id', authMiddleware, autorizar('funcionario'), categoriaController.deletar);
+
 export default router;

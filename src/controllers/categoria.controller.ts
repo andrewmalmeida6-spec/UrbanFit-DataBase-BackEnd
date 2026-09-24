@@ -27,3 +27,10 @@ export async function atualizar(req: Request, res: Response): Promise<void>{
     
     res.status(200).json(categoria);
 }
+
+export async function deletar(req: Request, res: Response): Promise<void>{
+    const id            = Number(req.params.id);
+    const categoria     = await categoriaService.deletarCategoria(id);
+    
+    res.status(200).json(categoria);
+}

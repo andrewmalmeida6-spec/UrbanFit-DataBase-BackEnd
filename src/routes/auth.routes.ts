@@ -27,9 +27,6 @@ const router = Router();
  *               senha:
  *                 type: string
  *                 example: '123456' 
- *               perfil:
- *                 type: 'cliente' | 'funcionario'
- *                 example 
  *     responses:
  *       200:
  *         description: Login feito com sucesso

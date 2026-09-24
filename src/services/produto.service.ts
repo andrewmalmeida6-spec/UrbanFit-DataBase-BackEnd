@@ -63,3 +63,9 @@ export async function atualizarProduto(id: number, dados: AtualizarProduto) {
         include: {categoria: true}
     })
 }
+
+export async function deletarProduto(id:number) {
+    return prisma.produto.delete({
+        where: {id}
+    })
+}

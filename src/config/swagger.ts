@@ -126,6 +126,17 @@ export const swaggerSpec = swaggerJSDoc({
             descricao: {type: 'string', example: 'Categoria para todas as |camisetas|'}
           },
         },
+
+        Funcionario: {
+          type: 'object',
+          description: 'Funcionário sem senha (a senha nunca sai do banco de dados)',
+          properties: {
+            id:         {type: 'integer', example: 1},
+            nome:       {type: 'string', example: 'Zé'},
+            email:      {type: 'string', example: 'z&e@teste.com'},
+            cargo:      {type: 'string', example: 'TI'},
+          },
+        },
       },
     },
   },

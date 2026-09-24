@@ -47,3 +47,9 @@ export async function AtualizarCategoria(id:number, dados: AtualizarCategoria) {
         data: dados
     })
 }
+
+export async function deletarCategoria(id:number) {
+    return prisma.categoria.delete({
+        where: {id}
+    })
+}
